@@ -27,32 +27,33 @@ void	philo_sleep(struct foo *vars)
 
 void	*new_philo(void *arg)
 {
+	struct foo *vars = arg;
+
+	pthread_mutex_lock(&(vars->f_lock));
+	(vars->f_count)++;
 	printf("new thread!\n");
 	philo_eat(arg);
 	philo_think(arg);
 	philo_sleep(arg);
+	pthread_mutex_unlock(&(vars->f_lock));
 	return (NULL);
 }
 
 void	generate_philosophers(pthread_t thread[3])
 {
 	size_t		i;
-	struct foo	*vars;
+	struct foo	vars;
 
 	i = 0;
-	vars = malloc(sizeof(struct foo));
-	vars->f_count = 0;
-	vars->f_id = 0;
-	if (pthread_mutex_init(&(vars->f_lock), NULL) != 0)
+	vars.f_count = 0;
+	vars.f_id = 0;
+	if (pthread_mutex_init(&(vars.f_lock), NULL) != 0)
 		return ;
 	while (i < 3)
 	{
 		if (pthread_create(&thread[i], NULL, new_philo, &vars) != 0)
 			return ;
 		i++;
-		pthread_mutex_lock(&(vars->f_lock));
-		(vars->f_count)++;
-		pthread_mutex_unlock(&(vars->f_lock));
 	}
 }
 
