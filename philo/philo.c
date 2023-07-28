@@ -3,9 +3,11 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 struct foo {
 	int				f_count;
+	struct timeval	time1;
 	pthread_mutex_t	f_lock;
 	int				f_id;
 };
@@ -28,9 +30,12 @@ void	philo_sleep(struct foo *vars)
 void	*new_philo(void *arg)
 {
 	struct foo *vars = arg;
+	struct timeval	time2;
 
 	pthread_mutex_lock(&(vars->f_lock));
 	(vars->f_count)++;
+	gettimeofday(&time2, NULL);
+	printf("cur: %d\n", time2.tv_usec - vars->time1.tv_usec);
 	printf("new thread!\n");
 	philo_eat(arg);
 	philo_think(arg);
@@ -47,6 +52,9 @@ void	generate_philosophers(pthread_t thread[3])
 	i = 0;
 	vars.f_count = 0;
 	vars.f_id = 0;
+	if (gettimeofday(&(vars.time1), NULL) == -1)
+		return ;
+	printf("sec: %d, usec: %d\n", (int)vars.time1.tv_sec, (int)vars.time1.tv_usec);
 	if (pthread_mutex_init(&(vars.f_lock), NULL) != 0)
 		return ;
 	while (i < 3)
