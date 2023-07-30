@@ -16,9 +16,11 @@ typedef struct	s_fork
 
 typedef struct	s_philo
 {
+	pthread_mutex_t	lock;
 	size_t			philo_id;
 	time_t			ttl;
 	t_philo_state	state;
+	struct timeval	*last_meal_time;
 	t_fork			*forks;
 }	t_philo;
 
@@ -32,9 +34,9 @@ typedef	struct	s_condition
 
 typedef struct	s_info
 {
-	t_philo		*philo;
-	t_fork		*forks;
-	t_condition	condition;
+	t_philo			*philo;
+	t_fork			*forks;
+	t_condition		condition;
 }	t_info;
 
 void	init_vars(t_condition *conditon, char *argv[])
@@ -62,23 +64,61 @@ t_fork	*create_forks(size_t numofphilo)
 	return (forks);
 }
 
-void	philo_eat(t_philo *philo, t_fork *forks, t_condition condition)
+void	wait_until(int32_t until)
+{
+	struct timeval	cur;
+
+	while (1)
+	{
+		gettimeofday(&cur, NULL);
+		if (cur.tv_usec - until > 0)
+			break ;
+	}
+}
+
+void	philo_eat_even(t_philo *philo, t_fork *forks, t_condition condition)
+{
+	if (philo->philo_id == 1)
+		pthread_mutex_lock(&(forks[condition.numofphilo - 1].lock));
+	else
+		pthread_mutex_lock(&(forks[philo->philo_id - 2].lock));
+	pthread_mutex_lock(&(forks[philo->philo_id - 1].lock));
+	printf("philo %zu has taken a fork\n", philo->philo_id);
+
+	printf("philo %zu has taken a fork\n", philo->philo_id);
+	// take_right_fork();
+	gettimeofday(philo->last_meal_time, NULL);
+	printf("philo %zu is eating\n", philo->philo_id);
+	struct timeval	now;
+	gettimeofday(&now, NULL);
+	wait_until(now.tv_usec + condition.timetoeat);
+	// usleep(condition.timetoeat * 1000);
+	// start_eating();
+	if (philo->philo_id == 1)
+		pthread_mutex_unlock(&(forks[condition.numofphilo - 1].lock));
+	else
+		pthread_mutex_unlock(&(forks[(philo->philo_id - 2)].lock));
+	pthread_mutex_unlock(&(forks[philo->philo_id - 1].lock));
+}
+
+void	philo_eat_odd(t_philo *philo, t_fork *forks, t_condition condition)
 {
 	pthread_mutex_lock(&(forks[philo->philo_id - 1].lock));
 	printf("philo %zu has taken a fork\n", philo->philo_id);
-	// take_left_fork();
+
 	if (philo->philo_id == 1)
 		pthread_mutex_lock(&(forks[condition.numofphilo - 1].lock));
 	else
 		pthread_mutex_lock(&(forks[philo->philo_id - 2].lock));
 	printf("philo %zu has taken a fork\n", philo->philo_id);
 	// take_right_fork();
+	gettimeofday(philo->last_meal_time, NULL);
 	printf("philo %zu is eating\n", philo->philo_id);
 	usleep(condition.timetoeat * 1000);
 	// start_eating();
 	pthread_mutex_unlock(&(forks[philo->philo_id - 1].lock));
 	if (philo->philo_id == 1)
-		pthread_mutex_lock(&(forks[condition.numofphilo - 1].lock));
+		pthread_mutex_unlock(&(forks[condition.numofphilo - 1].lock));
 	else
 		pthread_mutex_unlock(&(forks[(philo->philo_id - 2)].lock));
 }
@@ -101,31 +141,52 @@ void	*new_philo(void *arg)
 {
 	t_info *info = arg;
 
+	gettimeofday(info->philo->last_meal_time, NULL);
 	while (1)
 	{
+		pthread_mutex_lock(&info->philo->lock);
 		if (info->philo->state == PHILO_DIED)
-			return (NULL);
-		philo_eat(info->philo, info->forks, info->condition);
+		{
+			pthread_mutex_unlock(&info->philo->lock);
+			break ;
+		}
+		pthread_mutex_unlock(&info->philo->lock);
 		info->philo->ttl = info->condition.timetodie;
+		if (info->philo->philo_id % 2 == 1)
+			philo_eat_odd(info->philo, info->forks, info->condition);
+		else
+			philo_eat_even(info->philo, info->forks, info->condition);
+		pthread_mutex_lock(&info->philo->lock);
 		if (info->philo->state == PHILO_DIED)
-			return (NULL);
+		{
+			pthread_mutex_unlock(&info->philo->lock);
+			break ;
+		}
 		philo_sleep(info->philo, info->forks, info->condition);
+		pthread_mutex_lock(&info->philo->lock);
 		if (info->philo->state == PHILO_DIED)
-			return (NULL);
+		{
+			pthread_mutex_unlock(&info->philo->lock);
+			break ;
+		}
+		pthread_mutex_unlock(&info->philo->lock);
 		philo_think(info->philo, info->forks, info->condition);
 	}
+	printf("end philo id: %zu\n", info->philo->philo_id);
 	return (NULL);
 }
 
-pthread_t	*generate_philosophers(t_condition condition, t_fork *forks)
+t_philo	**generate_philosophers(pthread_t **philo_threads, t_condition condition, t_fork *forks)
 {
 	size_t		i;
-	pthread_t	*philo_threads;
+	// pthread_t	*philo_threads;
 	t_philo		*philo_info;
 	t_info		*info;
+	t_philo		**philo_array;
 
-	philo_threads = malloc(sizeof(pthread_t) * condition.numofphilo);
+	// philo_threads = malloc(sizeof(pthread_t) * condition.numofphilo);
 	i = 0;
+	philo_array = malloc(sizeof(t_philo *) * condition.numofphilo);
 	while (i < condition.numofphilo)
 	{
 		philo_info = malloc(sizeof(t_philo));
@@ -133,40 +194,87 @@ pthread_t	*generate_philosophers(t_condition condition, t_fork *forks)
 		philo_info->ttl = condition.timetodie;
 		philo_info->state = PHILO_EATING;
 		philo_info->forks = forks;
-	
+		philo_info->last_meal_time = malloc(sizeof(struct timeval));
+		gettimeofday(philo_info->last_meal_time, NULL);
+		if (pthread_mutex_init(&(philo_info->lock), NULL) != 0)
+			return (NULL);
+
+		philo_array[i] = philo_info;
+
 		info = malloc(sizeof(t_info));
 		info->forks = forks;
 		info->philo = philo_info;
 		info->condition = condition;
-		if (pthread_create(philo_threads, NULL, new_philo, info) != 0)
+
+		philo_threads[i] = malloc(sizeof(pthread_t));
+		if (pthread_create(philo_threads[i], NULL, new_philo, info) != 0)
 			return (NULL);
+		// printf("id: %d\n", philo_threads[i]);
 		i++;
 	}
-	return (philo_threads);
+	return (philo_array);
 }
 
-void	retrieve_philosophers(pthread_t *philo_threads, t_condition condition)
+void	retrieve_philosophers(pthread_t **philo_threads, t_condition condition)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < condition.numofphilo)
 	{
-		pthread_join(philo_threads[i], NULL);
+		// pthread_detach(*(philo_threads[i]));
+		// printf("idjoin: %d\n", philo_threads[i]);
+		pthread_join(*philo_threads[i], NULL);
 		i++;
 	}
 }
 
-void	monitor_philos()
+void	stop_all_thread(t_philo **philo_array, t_condition condition)
 {
-	
+	size_t	i;
+
+	i = 0;
+	while (i < condition.numofphilo)
+	{
+		pthread_mutex_lock(&philo_array[i]->lock);
+		philo_array[i]->state = PHILO_DIED;
+		pthread_mutex_unlock(&philo_array[i]->lock);
+		i++;
+	}
+}
+
+void	monitor_philos(t_philo **philo_array, t_condition condition)
+{
+	size_t			i;
+	struct timeval	curtime;
+
+	while (1)
+	{
+		i = 0;
+		while (i < condition.numofphilo)
+		{
+			pthread_mutex_lock(&philo_array[i]->lock);
+			gettimeofday(&curtime, NULL);
+			if (curtime.tv_usec - philo_array[i]->last_meal_time->tv_usec > condition.timetodie * 1000)
+			{
+				pthread_mutex_unlock(&philo_array[i]->lock);
+				printf("cur: %d, lmt: %d, ttd: %ld\n", curtime.tv_usec, philo_array[i]->last_meal_time->tv_usec, condition.timetodie * 1000);
+				printf("philo id %zu dead\n", i + 1);
+				stop_all_thread(philo_array, condition);
+				return ;
+			}
+			pthread_mutex_unlock(&philo_array[i]->lock);
+			i++;
+		}
+	}
 }
 
 int	main(int argc, char *argv[])
 {
 	t_condition	condition;
 	t_fork		*forks;
-	pthread_t	*philo_threads;
+	pthread_t	**philo_threads;
+	t_philo		**philo_array;
 
 	if (argc != 5)
 	{
@@ -175,8 +283,9 @@ int	main(int argc, char *argv[])
 	}
 	init_vars(&condition, argv);
 	forks = create_forks(condition.numofphilo);
-	philo_threads = generate_philosophers(condition, forks);
-	monitor_philos();
+	philo_threads = malloc(sizeof(pthread_t *) * condition.numofphilo);
+	philo_array = generate_philosophers(philo_threads, condition, forks);
+	monitor_philos(philo_array, condition);
 	retrieve_philosophers(philo_threads, condition);
 	printf("ending main\n");
 	return (0);
