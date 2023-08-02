@@ -60,21 +60,20 @@ void	monitor_philos(t_philo **philo_array, t_condition condition, t_state *state
 	size_t	i;
 	time_t	now;
 
-	// sleep(1);
 	while (1)
 	{
 		i = 0;
 		while (i < condition.numofphilo)
 		{
-			pthread_mutex_lock(&philo_array[i]->lock);
+			pthread_mutex_lock(&(philo_array[i]->lock));
 			now = get_cur_time();
-			if (philo_array[i]->ttd <= now * 1000 && philo_array[i]->ttd != 0)
+			if (philo_array[i]->ttd <= now)
 			{
 				printf("%ld %zu died\n", now / 1000, philo_array[i]->philo_id);
-				pthread_mutex_unlock(&philo_array[i]->lock);
 				pthread_mutex_lock(&state->lock);
 				state->alive = false;
 				pthread_mutex_unlock(&state->lock);
+				pthread_mutex_unlock(&philo_array[i]->lock);
 				return ;
 			}
 			pthread_mutex_unlock(&philo_array[i]->lock);
