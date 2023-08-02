@@ -28,7 +28,9 @@ int	philo_eat_even(t_philo *philo, t_fork **forks, t_condition condition, t_stat
 		return (-1);
 	}
 	wait_until(now + condition.timetoeat * 1000);
+	// printf("%zu has put down a fork\n", philo->philo_id);
 	pthread_mutex_unlock(&(forks[philo->philo_id == condition.numofphilo ? 0 : philo->philo_id]->lock));
+	// printf("%zu has put down a fork\n", philo->philo_id);
 	pthread_mutex_unlock(&(forks[(philo->philo_id - 1)]->lock));
 	return (0);
 }
@@ -37,6 +39,8 @@ int	philo_eat_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state
 {
 	time_t	now;
 
+	if (philo->philo_id == 1 && condition.numofphilo == 1)
+		return (-1);
 	pthread_mutex_lock(&(forks[philo->philo_id == condition.numofphilo ? 0 : philo->philo_id]->lock));
 	if (print_msg_takefork(philo, state) == -1)
 	{
@@ -61,7 +65,9 @@ int	philo_eat_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state
 		return (-1);
 	}
 	wait_until(now + condition.timetoeat * 1000);
+	// printf("%zu has put down a fork\n", philo->philo_id);
 	pthread_mutex_unlock(&(forks[(philo->philo_id - 1)]->lock));
+	// printf("%zu has put down a fork\n", philo->philo_id);
 	pthread_mutex_unlock(&(forks[philo->philo_id == condition.numofphilo ? 0 : philo->philo_id]->lock));
 	return (0);
 }
@@ -89,7 +95,7 @@ void	*new_philo_even(void *arg)
 	t_info *info = arg;
 
 	pthread_mutex_lock(&info->philo->lock);
-	info->philo->ttd = get_cur_time() * 1000;
+	info->philo->ttd = get_cur_time() + info->condition.timetodie * 1000;
 	pthread_mutex_unlock(&info->philo->lock);
 	while (1)
 	{
@@ -108,7 +114,7 @@ void	*new_philo_odd(void *arg)
 	t_info *info = arg;
 
 	pthread_mutex_lock(&info->philo->lock);
-	info->philo->ttd = get_cur_time() * 1000;
+	info->philo->ttd = get_cur_time() + info->condition.timetodie * 1000;
 	pthread_mutex_unlock(&info->philo->lock);
 	while (1)
 	{

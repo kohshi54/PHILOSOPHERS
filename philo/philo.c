@@ -28,14 +28,14 @@ t_philo	**generate_philosophers(pthread_t **threads, t_condition condition, t_fo
 		info->state = state;
 
 		threads[i] = malloc(sizeof(pthread_t));
-		if (i % 2 == 0)
+		if ((i + 1) % 2 == 0)
 		{
-			if (pthread_create(threads[i], NULL, new_philo_odd, info) != 0)
+			if (pthread_create(threads[i], NULL, new_philo_even, info) != 0)
 				return (NULL);
 		}
 		else
 		{
-			if (pthread_create(threads[i], NULL, new_philo_even, info) != 0)
+			if (pthread_create(threads[i], NULL, new_philo_odd, info) != 0)
 				return (NULL);			
 		}
 		i++;
@@ -69,6 +69,7 @@ void	monitor_philos(t_philo **philo_array, t_condition condition, t_state *state
 			now = get_cur_time();
 			if (philo_array[i]->ttd <= now)
 			{
+				printf("ttd: %ld, now: %ld\n", philo_array[i]->ttd, now);
 				pthread_mutex_lock(&state->lock);
 				state->alive = false;
 				pthread_mutex_unlock(&state->lock);
