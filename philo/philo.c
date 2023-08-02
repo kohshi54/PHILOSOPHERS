@@ -69,10 +69,10 @@ void	monitor_philos(t_philo **philo_array, t_condition condition, t_state *state
 			now = get_cur_time();
 			if (philo_array[i]->ttd <= now)
 			{
-				printf("%ld %zu died\n", now / 1000, philo_array[i]->philo_id);
 				pthread_mutex_lock(&state->lock);
 				state->alive = false;
 				pthread_mutex_unlock(&state->lock);
+				printf("%ld %zu died\n", now / 1000, philo_array[i]->philo_id);
 				pthread_mutex_unlock(&philo_array[i]->lock);
 				return ;
 			}
