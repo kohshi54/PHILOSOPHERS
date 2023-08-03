@@ -18,6 +18,7 @@ typedef struct	s_philo
 {
 	size_t			philo_id;
 	time_t			ttd;
+	size_t			eat_count;
 	pthread_mutex_t	lock;
 }	t_philo;
 
@@ -27,7 +28,7 @@ typedef	struct	s_condition
 	time_t	timetodie;
 	time_t	timetoeat;
 	time_t	timetosleep;
-	size_t	numofeat;
+	size_t	numtoeat;
 }	t_condition;
 
 typedef struct	s_state
@@ -45,7 +46,7 @@ typedef struct	s_info
 }	t_info;
 
 time_t	get_cur_time();
-void	init_condition(t_condition *conditon, char *argv[]);
+void	init_condition(t_condition *conditon, int argc, char *argv[]);
 t_fork	**create_forks(size_t numofphilo);
 void	wait_until(time_t until);
 

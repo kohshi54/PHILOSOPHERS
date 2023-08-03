@@ -8,13 +8,14 @@ time_t	get_cur_time()
 	return (cur.tv_sec * 1000000) + cur.tv_usec;
 }
 
-void	init_condition(t_condition *conditon, char *argv[])
+void	init_condition(t_condition *conditon, int argc, char *argv[])
 {
 	conditon->numofphilo = atoi(argv[1]);
 	conditon->timetodie = atoi(argv[2]);
 	conditon->timetoeat = atoi(argv[3]);
 	conditon->timetosleep  = atoi(argv[4]);
-	// conditon->numofeat = atoi(argv[5]);
+	if (argc == 6)
+		conditon->numtoeat = atoi(argv[5]);
 }
 
 t_fork	**create_forks(size_t numofphilo)

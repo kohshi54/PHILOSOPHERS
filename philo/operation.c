@@ -28,6 +28,9 @@ int	philo_eat_even(t_philo *philo, t_fork **forks, t_condition condition, t_stat
 	philo->ttd = now + condition.timetodie * 1000;
 	pthread_mutex_unlock(&(philo->lock));
 	wait_until(now + condition.timetoeat * 1000);
+	pthread_mutex_lock(&philo->lock);
+	philo->eat_count++;
+	pthread_mutex_unlock(&philo->lock);
 	// printf("%zu has put down a fork\n", philo->philo_id);
 	pthread_mutex_unlock(&(forks[philo->philo_id == condition.numofphilo ? 0 : philo->philo_id]->lock));
 	// printf("%zu has put down a fork\n", philo->philo_id);
@@ -65,6 +68,9 @@ int	philo_eat_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state
 	philo->ttd = now + condition.timetodie * 1000;
 	pthread_mutex_unlock(&philo->lock);
 	wait_until(now + condition.timetoeat * 1000);
+	pthread_mutex_lock(&philo->lock);
+	philo->eat_count++;
+	pthread_mutex_unlock(&philo->lock);
 	// printf("%zu has put down a fork\n", philo->philo_id);
 	pthread_mutex_unlock(&(forks[(philo->philo_id - 1)]->lock));
 	// printf("%zu has put down a fork\n", philo->philo_id);
