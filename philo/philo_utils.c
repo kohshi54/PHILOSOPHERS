@@ -14,6 +14,7 @@ void	init_condition(t_condition *conditon, char *argv[])
 	conditon->timetodie = atoi(argv[2]);
 	conditon->timetoeat = atoi(argv[3]);
 	conditon->timetosleep  = atoi(argv[4]);
+	// conditon->numofeat = atoi(argv[5]);
 }
 
 t_fork	**create_forks(size_t numofphilo)

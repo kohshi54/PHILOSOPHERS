@@ -17,16 +17,16 @@ int	philo_eat_even(t_philo *philo, t_fork **forks, t_condition condition, t_stat
 		pthread_mutex_unlock(&(forks[(philo->philo_id - 1)]->lock));
 		return (-1);	
 	}
-	now = get_cur_time();
-	pthread_mutex_lock(&(philo->lock));
-	philo->ttd = now + condition.timetodie * 1000;
-	pthread_mutex_unlock(&(philo->lock));
-	if (print_msg_eat(philo, state, now) == -1)
+	now = 0;
+	if (print_msg_eat(philo, state, &now) == -1)
 	{
 		pthread_mutex_unlock(&(forks[philo->philo_id == condition.numofphilo ? 0 : philo->philo_id]->lock));
 		pthread_mutex_unlock(&(forks[(philo->philo_id - 1)]->lock));
 		return (-1);
 	}
+	pthread_mutex_lock(&(philo->lock));
+	philo->ttd = now + condition.timetodie * 1000;
+	pthread_mutex_unlock(&(philo->lock));
 	wait_until(now + condition.timetoeat * 1000);
 	// printf("%zu has put down a fork\n", philo->philo_id);
 	pthread_mutex_unlock(&(forks[philo->philo_id == condition.numofphilo ? 0 : philo->philo_id]->lock));
@@ -54,16 +54,16 @@ int	philo_eat_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state
 		pthread_mutex_unlock(&(forks[philo->philo_id == condition.numofphilo ? 0 : philo->philo_id]->lock));
 		return (-1);
 	}
-	now = get_cur_time();
-	pthread_mutex_lock(&philo->lock);
-	philo->ttd = now + condition.timetodie * 1000;
-	pthread_mutex_unlock(&philo->lock);
-	if (print_msg_eat(philo, state, now) == -1)
+	now = 0;
+	if (print_msg_eat(philo, state, &now) == -1)
 	{
 		pthread_mutex_unlock(&(forks[(philo->philo_id - 1)]->lock));
 		pthread_mutex_unlock(&(forks[philo->philo_id == condition.numofphilo ? 0 : philo->philo_id]->lock));
 		return (-1);
 	}
+	pthread_mutex_lock(&philo->lock);
+	philo->ttd = now + condition.timetodie * 1000;
+	pthread_mutex_unlock(&philo->lock);
 	wait_until(now + condition.timetoeat * 1000);
 	// printf("%zu has put down a fork\n", philo->philo_id);
 	pthread_mutex_unlock(&(forks[(philo->philo_id - 1)]->lock));
@@ -83,9 +83,11 @@ int	philo_think(t_philo *philo, t_fork **forks, t_condition condition, t_state *
 
 int	philo_sleep(t_philo *philo, t_fork **forks, t_condition condition, t_state *state)
 {
-	if (print_msg_sleep(philo, state) == -1)
+	time_t now;
+	now = 0;
+	if (print_msg_sleep(philo, state, &now) == -1)
 		return (-1);
-	wait_until(get_cur_time() + condition.timetosleep * 1000);
+	wait_until(now + condition.timetosleep * 1000);
 	(void)forks;
 	return (0);
 }

@@ -69,7 +69,7 @@ void	monitor_philos(t_philo **philo_array, t_condition condition, t_state *state
 			now = get_cur_time();
 			if (philo_array[i]->ttd <= now)
 			{
-				printf("ttd: %ld, now: %ld\n", philo_array[i]->ttd, now);
+				// printf("ttd: %ld, now: %ld\n", philo_array[i]->ttd, now);
 				pthread_mutex_lock(&state->lock);
 				state->alive = false;
 				pthread_mutex_unlock(&state->lock);
@@ -111,6 +111,6 @@ int	main(int argc, char *argv[])
 	philo_array = generate_philosophers(threads, condition, forks, &state);
 	monitor_philos(philo_array, condition, &state);
 	retrieve_philosophers(threads, condition);
-	printf("ending main\n");
+	// printf("ending main\n");
 	return (0);
 }

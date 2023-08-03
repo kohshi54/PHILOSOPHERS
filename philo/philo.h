@@ -27,6 +27,7 @@ typedef	struct	s_condition
 	time_t	timetodie;
 	time_t	timetoeat;
 	time_t	timetosleep;
+	size_t	numofeat;
 }	t_condition;
 
 typedef struct	s_state
@@ -58,8 +59,8 @@ void	*new_philo_odd(void *arg);
 
 int	print_msg_takefork(t_philo *philo, t_state *state);
 // int	print_msg_eat(t_philo *philo, t_state *state);
-int	print_msg_eat(t_philo *philo, t_state *state, time_t now);
-int	print_msg_sleep(t_philo *philo, t_state *state);
+int	print_msg_eat(t_philo *philo, t_state *state, time_t *now);
+int	print_msg_sleep(t_philo *philo, t_state *state, time_t *now);
 int	print_msg_think(t_philo *philo, t_state *state);
 
 #endif
