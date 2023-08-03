@@ -7,8 +7,13 @@ bool	check_all_philo_has_eaten_at_least_counttoeat(t_philo **philo_array, t_cond
 	i = 0;
 	while (i < condition.numofphilo)
 	{
+		pthread_mutex_lock(&(philo_array[i]->lock));
 		if (philo_array[i]->eat_count < condition.numtoeat)
+		{
+			pthread_mutex_unlock(&philo_array[i]->lock);
 			return (false);
+		}
+		pthread_mutex_unlock(&philo_array[i]->lock);
 		i++;
 	}
 	return (true);
