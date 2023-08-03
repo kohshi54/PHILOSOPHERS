@@ -68,10 +68,10 @@ int	philo_think(t_philo *philo, t_fork **forks, t_condition condition, t_state *
 int	philo_sleep(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
 
 /* ft_print_msg.c */
-int	print_msg_takefork(t_philo *philo, t_state *state);
-int	print_msg_eat(t_philo *philo, t_state *state, time_t *now);
-int	print_msg_sleep(t_philo *philo, t_state *state, time_t *now);
-int	print_msg_think(t_philo *philo, t_state *state);
+int		print_msg_takefork(t_philo *philo, t_state *state);
+time_t	print_msg_eat(t_philo *philo, t_state *state);
+time_t	print_msg_sleep(t_philo *philo, t_state *state);
+int		print_msg_think(t_philo *philo, t_state *state);
 
 /* ft_monitor.c */
 bool	check_all_philo_has_eaten_at_least_counttoeat(t_philo **philo_array, t_condition condition);
@@ -84,5 +84,8 @@ void	wait_until(time_t until);
 /* ft_cleanup.c */
 void	retrieve_philosophers(pthread_t **philo_threads, t_condition condition);
 void	*free_forks_and_return_null(t_fork **forks, size_t cur);
+void	free_philos(t_philo **philo_array, size_t cur);
+void	free_infos(t_info **info_array, size_t cur);
+void	free_threads(pthread_t **threads, size_t cur);
 
 #endif

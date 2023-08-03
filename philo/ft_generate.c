@@ -22,46 +22,6 @@ t_fork	**create_forks(size_t numofphilo)
 	return (forks);
 }
 
-void	free_philos(t_philo **philo_array, size_t cur)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < cur)
-	{
-		free(philo_array[i]);
-		i++;
-	}
-	free(philo_array);
-}
-
-void	free_infos(t_info **info_array, size_t cur)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < cur)
-	{
-		free(info_array[i]);
-		i++;
-	}
-	free(info_array);
-}
-
-
-void	free_threads(pthread_t **threads, size_t cur)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < cur)
-	{
-		free(threads[i]);
-		i++;
-	}
-	free(threads);
-}
-
 t_philo	**generate_philosophers(pthread_t **threads, t_condition condition, t_fork **forks, t_state *state)
 {
 	size_t		i;

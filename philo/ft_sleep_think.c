@@ -12,10 +12,11 @@ int	philo_think(t_philo *philo, t_fork **forks, t_condition condition, t_state *
 int	philo_sleep(t_philo *philo, t_fork **forks, t_condition condition, t_state *state)
 {
 	time_t now;
-	now = 0;
-	if (print_msg_sleep(philo, state, &now) == -1)
+
+	now = print_msg_sleep(philo, state);
+	if (now == -1)
 		return (-1);
 	wait_until(now + condition.timetosleep * 1000);
 	(void)forks;
-	return (0);
+	return (now);
 }
