@@ -49,6 +49,7 @@ typedef struct	s_info
 int		validate_input(int argc, char *argv[]);
 void	init_condition(t_condition *conditon, int argc, char *argv[]);
 bool	init_state(t_state *state);
+bool	set_vars(t_condition *condition, int argc, char *argv[], t_state *state);
 
 /* ft_generate.c */
 t_fork	**create_forks(size_t numofphilo);
@@ -82,5 +83,6 @@ void	wait_until(time_t until);
 
 /* ft_cleanup.c */
 void	retrieve_philosophers(pthread_t **philo_threads, t_condition condition);
+void	*free_forks_and_return_null(t_fork **forks, size_t cur);
 
 #endif

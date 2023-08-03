@@ -20,20 +20,28 @@ int	validate_input(int argc, char *argv[])
 	return (0);
 }
 
-void	init_condition(t_condition *conditon, int argc, char *argv[])
+void	init_condition(t_condition *condition, int argc, char *argv[])
 {
-	conditon->numofphilo = atoi(argv[1]);
-	conditon->timetodie = atoi(argv[2]);
-	conditon->timetoeat = atoi(argv[3]);
-	conditon->timetosleep  = atoi(argv[4]);
+	condition->numofphilo = atoi(argv[1]);
+	condition->timetodie = atoi(argv[2]);
+	condition->timetoeat = atoi(argv[3]);
+	condition->timetosleep  = atoi(argv[4]);
 	if (argc == 6)
-		conditon->numtoeat = atoi(argv[5]);
+		condition->numtoeat = atoi(argv[5]);
 }
 
 bool	init_state(t_state *state)
 {
 	state->alive = 1;
 	if (pthread_mutex_init(&(state->lock), NULL) != 0)
+		return (false);
+	return (true);
+}
+
+bool	set_vars(t_condition *condition, int argc, char *argv[], t_state *state)
+{
+	init_condition(condition, argc, argv);
+	if (init_state(state) == false)
 		return (false);
 	return (true);
 }
