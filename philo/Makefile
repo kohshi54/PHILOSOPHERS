@@ -2,7 +2,17 @@ NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror  
 #  -fsanitize=thread -g
-SRCS = philo.c philo_utils.c operation.c print_msg.c
+SRCS = main.c \
+		ft_prepare.c \
+		ft_generate.c \
+		ft_thread.c \
+		ft_eat.c \
+		ft_sleep_think.c \
+		ft_print_msg.c \
+		ft_monitor.c \
+		ft_time.c \
+		ft_cleanup.c
+
 OBJS = $(SRCS:%.c=%.o)
 
 INCLUDES = philo.h
