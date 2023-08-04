@@ -4,12 +4,6 @@ sem_t	*create_forks(size_t numofphilo)
 {
 	sem_t	*forks;
 
-	forks = malloc(sizeof(sem_t));
-	if (forks == NULL)
-	{
-		write(STDERR_FILENO, "ERROR ALLOCATING MEMORY\n", 24);
-		exit(EXIT_FAILURE);
-	}
 	forks = sem_open(SEM_FORK, O_CREAT, 0644, numofphilo);
 	if (forks == SEM_FAILED)
 	{
@@ -27,7 +21,7 @@ void	generate_philosophers(t_condition condition, sem_t *forks)
 
 	i = 0;
 	print = sem_open(SEM_PRINT, O_CREAT | O_EXCL, 0644, 1);
-	if (forks == SEM_FAILED)
+	if (print == SEM_FAILED)
 	{
 		write(STDERR_FILENO, "ERROR CREATING SEM_PRINT\n", 24);
 		exit(EXIT_FAILURE);
