@@ -10,7 +10,8 @@ SRCS = main.c \
 		ft_sleep_think.c \
 		ft_print_msg.c \
 		ft_time.c \
-		ft_cleanup.c
+		ft_cleanup.c \
+		ft_sem_monitor.c \
 
 OBJS = $(SRCS:%.c=%.o)
 

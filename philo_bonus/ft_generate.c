@@ -22,7 +22,6 @@ sem_t	*generate_philosophers(t_condition condition, sem_t *forks)
 	sem_t		*print;
 
 	i = 0;
-	// print = sem_open(SEM_PRINT, O_CREAT | O_EXCL, 0644, 1);
 	print = sem_open(SEM_PRINT, O_CREAT | O_EXCL, 0644, 1);
 	if (print == SEM_FAILED)
 	{
@@ -36,14 +35,17 @@ sem_t	*generate_philosophers(t_condition condition, sem_t *forks)
 		pid = fork();
 		if (pid < 0)
 		{
+			sem_close(forks);
+			sem_unlink(SEM_FORK);
+			sem_close(print);
+			sem_unlink(SEM_PRINT);
 			kill(-1, SIGINT);
 			write(STDERR_FILENO, "FORK ERROR\n", 10);
 			exit(EXIT_FAILURE);
 		}
 		else if (pid == 0)
 		{
-			exit(0);
-			// new_philo(i + 1, condition, forks, print);
+			new_philo(i + 1, condition, forks, print);
 			/*
 			if ((i + 1) % 2 == 0)
 				new_philo_even(i + 1, condition, forks, print);

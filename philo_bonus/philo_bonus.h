@@ -50,7 +50,8 @@ sem_t	*generate_philosophers(t_condition condition, sem_t *forks);
 void	add_eat_count(t_philo *philo);
 void	*monitor_thread(void *arg);
 pthread_t	start_monitor_thread(t_philo *philo, sem_t *print);
-void	init_philo(t_philo *philo, t_condition condition, size_t philo_id);
+// void	init_philo(t_philo *philo, t_condition condition, size_t philo_id);
+char	*init_philo(t_philo *philo, t_condition condition, size_t philo_id);
 void	*new_philo(size_t philo_id, t_condition condition, sem_t *forks, sem_t *print);
 
 /* ft_eat.c */
@@ -77,5 +78,7 @@ void	wait_until(time_t until);
 /* ft_cleanup.c */
 void	wait_for_philosophers(t_condition condition);
 void	cleanup_semaphore(sem_t *fork, sem_t *print);
+
+char	*gen_unique_sem_monitor(size_t philo_id);
 
 #endif

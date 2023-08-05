@@ -4,9 +4,10 @@ void	wait_for_philosophers(t_condition condition)
 {
 	int		status;
 
-	while (waitpid(-1, &status, 0) > 0)
+	while (condition.numofphilo)
 	{
-
+		printf("ko\n");
+		waitpid(-1, &status, 0);
 	}
 	(void)condition;
 }
