@@ -52,6 +52,7 @@ int	philo_eat_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state
 
 	if (philo->philo_id == 1 && condition.numofphilo == 1)
 		return (-1);
+	usleep(100);
 	pthread_mutex_lock(&(forks[philo->philo_id == condition.numofphilo ? 0 : philo->philo_id]->lock));
 	if (print_msg_takefork(philo, state) == -1)
 	{

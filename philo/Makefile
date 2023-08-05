@@ -1,7 +1,7 @@
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror  
-#  -fsanitize=thread -g
+CFLAGS = -Wall -Wextra -Werror 
+# -fsanitize=thread -g
 SRCS = main.c \
 		ft_prepare.c \
 		ft_generate.c \
