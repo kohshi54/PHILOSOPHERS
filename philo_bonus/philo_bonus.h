@@ -43,7 +43,8 @@ bool	set_vars(t_condition *condition, int argc, char *argv[]);
 
 /* ft_generate.c */
 sem_t	*create_forks(size_t numofphilo);
-void	generate_philosophers(t_condition condition, sem_t *forks);
+// void	generate_philosophers(t_condition condition, sem_t *forks);
+sem_t	*generate_philosophers(t_condition condition, sem_t *forks);
 
 /* ft_process.c */
 void	add_eat_count(t_philo *philo);
@@ -75,5 +76,6 @@ void	wait_until(time_t until);
 
 /* ft_cleanup.c */
 void	wait_for_philosophers(t_condition condition);
+void	cleanup_semaphore(sem_t *fork, sem_t *print);
 
 #endif

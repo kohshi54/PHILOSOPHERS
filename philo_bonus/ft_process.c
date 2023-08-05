@@ -69,15 +69,17 @@ void	*new_philo(size_t philo_id, t_condition condition, sem_t *forks, sem_t *pri
 	t_philo	philo;
 
 	init_philo(&philo, condition, philo_id);
-	start_monitor_thread(&philo, print);
-	while (1)
-	{
-		if (philo_eat(&philo, forks, condition, print) == -1)
-			break ;
-		if (philo_sleep(&philo, condition, print) == -1)
-			break ;
-		if (philo_think(&philo, print) == -1)
-			break ;
-	}
+	// start_monitor_thread(&philo, print);
+	// while (1)
+	// {
+	// 	if (philo_eat(&philo, forks, condition, print) == -1)
+	// 		break ;
+	// 	if (philo_sleep(&philo, condition, print) == -1)
+	// 		break ;
+	// 	if (philo_think(&philo, print) == -1)
+	// 		break ;
+	// }
+	(void)forks;
+	(void)print;
 	return (NULL);
 }
