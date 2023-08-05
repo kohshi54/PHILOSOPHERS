@@ -7,6 +7,7 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <stdbool.h>
+# include <limits.h>
 
 typedef struct	s_fork
 {
@@ -87,5 +88,8 @@ void	*free_forks_and_return_null(t_fork **forks, size_t cur);
 void	free_philos(t_philo **philo_array, size_t cur);
 void	free_infos(t_info **info_array, size_t cur);
 void	free_threads(pthread_t **threads, size_t cur);
+
+/* ft_atoi.c */
+int		ft_atoi(const char *str);
 
 #endif

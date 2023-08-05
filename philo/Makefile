@@ -11,7 +11,8 @@ SRCS = main.c \
 		ft_print_msg.c \
 		ft_monitor.c \
 		ft_time.c \
-		ft_cleanup.c
+		ft_cleanup.c \
+		ft_atoi.c
 
 OBJS = $(SRCS:%.c=%.o)
 
