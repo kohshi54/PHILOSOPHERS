@@ -18,11 +18,11 @@ int	main(int argc, char *argv[])
 	threads = malloc(sizeof(pthread_t *) * condition.numofphilo);
 	if (threads == NULL)
 		return (0);
-	philo_array = generate_philosophers(threads, condition, forks, &state);
+	philo_array = generate_philosophers(condition, forks, &state);
 	if (philo_array == NULL)
 		return (0);
 	monitor_philos(philo_array, condition, &state, argc);
-	retrieve_philosophers(threads, condition);
+	retrieve_philosophers(philo_array, condition);
 	// printf("ending main\n");
 	return (0);
 }

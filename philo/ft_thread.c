@@ -1,5 +1,24 @@
 #include "philo.h"
 
+void	*new_philo_first(void *arg)
+{
+	t_info *info = arg;
+
+	pthread_mutex_lock(&info->philo->lock);
+	info->philo->ttd = get_cur_time() + info->condition.timetodie * 1000;
+	pthread_mutex_unlock(&info->philo->lock);
+	while (1)
+	{
+		if (philo_eat_first(info->philo, info->forks, info->condition, info->state) == -1)
+			break ;
+		if (philo_sleep(info->philo, info->forks, info->condition, info->state) == -1)
+			break ;
+		if (philo_think(info->philo, info->forks, info->condition, info->state) == -1)
+			break ;
+	}
+	return (NULL);
+}
+
 void	*new_philo_even(void *arg)
 {
 	t_info *info = arg;
@@ -29,6 +48,25 @@ void	*new_philo_odd(void *arg)
 	while (1)
 	{
 		if (philo_eat_odd(info->philo, info->forks, info->condition, info->state) == -1)
+			break ;
+		if (philo_sleep(info->philo, info->forks, info->condition, info->state) == -1)
+			break ;
+		if (philo_think(info->philo, info->forks, info->condition, info->state) == -1)
+			break ;
+	}
+	return (NULL);
+}
+
+void	*new_philo_last(void *arg)
+{
+	t_info *info = arg;
+
+	pthread_mutex_lock(&info->philo->lock);
+	info->philo->ttd = get_cur_time() + info->condition.timetodie * 1000;
+	pthread_mutex_unlock(&info->philo->lock);
+	while (1)
+	{
+		if (philo_eat_last(info->philo, info->forks, info->condition, info->state) == -1)
 			break ;
 		if (philo_sleep(info->philo, info->forks, info->condition, info->state) == -1)
 			break ;

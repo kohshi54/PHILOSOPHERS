@@ -22,85 +22,82 @@ t_fork	**create_forks(size_t numofphilo)
 	return (forks);
 }
 
-t_philo	**generate_philosophers(pthread_t **threads, t_condition condition, t_fork **forks, t_state *state)
+t_philo	*allocate_and_set_philo(size_t i)
+{
+	t_philo	*philo;
+
+	philo = malloc(sizeof(t_philo));
+	if (philo == NULL)
+		return (NULL);
+	philo->philo_id = i + 1;
+	philo->ttd = 0;
+	if (pthread_mutex_init(&(philo->lock), NULL) != 0)
+		return (NULL);
+	return (philo);
+}
+
+t_info	*allocat_and_set_info(t_fork **forks, t_philo *philo, t_condition condition, t_state *state)
+{
+	t_info	*new;
+
+	new = malloc(sizeof(t_info));
+	new->forks = forks;
+	new->philo = philo;
+	new->condition = condition;
+	new->state = state;
+	return (new);
+}
+
+t_philo	*set_philo_info_and_new_thread(size_t i, t_fork **forks, t_condition condition, t_state *state)
+{
+	t_philo	*new_philo;
+	t_info	*new_info;
+
+	new_philo = allocate_and_set_philo(i);
+	if (new_philo == NULL)
+		return (NULL);
+	new_info = allocat_and_set_info(forks, new_philo, condition, state);
+	if (new_info == NULL)
+		return (NULL);
+	if ((i + 1) == 1)
+	{
+		if (pthread_create(&new_philo->thread_id, NULL, new_philo_first, new_info) != 0)
+			return (NULL);
+	}
+	else if ((i + 1) == condition.numofphilo)
+	{
+		if (pthread_create(&new_philo->thread_id, NULL, new_philo_last, new_info) != 0)
+			return (NULL);
+	}
+	else if ((i + 1) % 2 == 0)
+	{
+		if (pthread_create(&new_philo->thread_id, NULL, new_philo_even, new_info) != 0)
+			return (NULL);
+	}
+	else
+	{
+		if (pthread_create(&new_philo->thread_id, NULL, new_philo_odd, new_info) != 0)
+			return (NULL);
+	}
+	return (new_philo);
+}
+
+t_philo	**generate_philosophers(t_condition condition, t_fork **forks, t_state *state)
 {
 	size_t		i;
-	t_philo		*philo;
 	t_philo		**philo_array;
-	t_info		**info_array;
 
 	i = 0;
 	philo_array = malloc(sizeof(t_philo *) * condition.numofphilo);
 	if (philo_array == NULL)
 		return (free_forks_and_return_null(forks, condition.numofphilo));
-	info_array = malloc(sizeof(t_info *) * condition.numofphilo);
-	if (info_array == NULL)
-	{
-		free(philo_array);
-		return (free_forks_and_return_null(forks, condition.numofphilo));
-	}
 	while (i < condition.numofphilo)
 	{
-		philo = malloc(sizeof(t_philo));
-		if (philo == NULL)
+		philo_array[i] = set_philo_info_and_new_thread(i, forks, condition, state);
+		if (philo_array[i] == NULL)
 		{
-			free_threads(threads, i);
-			free_infos(info_array, i);
 			free_philos(philo_array, i);
 			return (free_forks_and_return_null(forks, condition.numofphilo));
-		}
-		philo->philo_id = i + 1;
-		philo->ttd = 0;
-		if (pthread_mutex_init(&(philo->lock), NULL) != 0)
-		{
-			free_threads(threads, i);
-			free_infos(info_array, i);
-			free_philos(philo_array, i);
-			return (free_forks_and_return_null(forks, condition.numofphilo));
-		}
-
-		philo_array[i] = philo;
-
-		info_array[i] = malloc(sizeof(t_info));
-		if (info_array[i] == NULL)
-		{
-			free_threads(threads, i);
-			free_infos(info_array, i);
-			free_philos(philo_array, i);
-			return (free_forks_and_return_null(forks, condition.numofphilo));
-		}
-		info_array[i]->forks = forks;
-		info_array[i]->philo = philo;
-		info_array[i]->condition = condition;
-		info_array[i]->state = state;
-
-		threads[i] = malloc(sizeof(pthread_t));
-		if (threads[i] == NULL)
-		{
-			free_threads(threads, i);
-			free_infos(info_array, i);
-			free_philos(philo_array, i);
-			return (free_forks_and_return_null(forks, condition.numofphilo));
-		}
-		if ((i + 1) % 2 == 0)
-		{
-			if (pthread_create(threads[i], NULL, new_philo_even, info_array[i]) != 0)
-			{
-				free_threads(threads, i);
-				free_infos(info_array, i);
-				free_philos(philo_array, i);
-				return (free_forks_and_return_null(forks, condition.numofphilo));
-			}
-		}
-		else
-		{
-			if (pthread_create(threads[i], NULL, new_philo_odd, info_array[i]) != 0)
-			{
-				free_threads(threads, i);
-				free_infos(info_array, i);
-				free_philos(philo_array, i);
-				return (free_forks_and_return_null(forks, condition.numofphilo));
-			}
 		}
 		i++;
 	}

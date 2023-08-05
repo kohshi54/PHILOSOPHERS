@@ -17,6 +17,7 @@ typedef struct	s_fork
 
 typedef struct	s_philo
 {
+	pthread_t		thread_id;
 	size_t			philo_id;
 	time_t			ttd;
 	size_t			eat_count;
@@ -54,13 +55,17 @@ bool	set_vars(t_condition *condition, int argc, char *argv[], t_state *state);
 
 /* ft_generate.c */
 t_fork	**create_forks(size_t numofphilo);
-t_philo	**generate_philosophers(pthread_t **threads, t_condition condition, t_fork **forks, t_state *state);
+t_philo	**generate_philosophers(t_condition condition, t_fork **forks, t_state *state);
 
 /* ft_thread.c */
+void	*new_philo_first(void *arg);
+void	*new_philo_last(void *arg);
 void	*new_philo_even(void *arg);
 void	*new_philo_odd(void *arg);
 
 /* ft_eat.c */
+int	philo_eat_first(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
+int	philo_eat_last(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
 int	philo_eat_even(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
 int	philo_eat_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
 
@@ -83,7 +88,7 @@ time_t	get_cur_time();
 void	wait_until(time_t until);
 
 /* ft_cleanup.c */
-void	retrieve_philosophers(pthread_t **philo_threads, t_condition condition);
+void	retrieve_philosophers(t_philo **philo_array, t_condition condition);
 void	*free_forks_and_return_null(t_fork **forks, size_t cur);
 void	free_philos(t_philo **philo_array, size_t cur);
 void	free_infos(t_info **info_array, size_t cur);
