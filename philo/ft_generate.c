@@ -64,9 +64,14 @@ t_philo	*set_philo_info_and_new_thread(size_t i, t_fork **forks, t_condition con
 		if (pthread_create(&new_philo->thread_id, NULL, new_philo_first, new_info) != 0)
 			return (NULL);
 	}
-	else if ((i + 1) == condition.numofphilo)
+	else if ((i + 1) == condition.numofphilo && (i + 1) % 2 == 0)
 	{
-		if (pthread_create(&new_philo->thread_id, NULL, new_philo_last, new_info) != 0)
+		if (pthread_create(&new_philo->thread_id, NULL, new_philo_last_even, new_info) != 0)
+			return (NULL);
+	}
+	else if ((i + 1) == condition.numofphilo && (i + 1) % 2 == 1)
+	{
+		if (pthread_create(&new_philo->thread_id, NULL, new_philo_last_odd, new_info) != 0)
 			return (NULL);
 	}
 	else if ((i + 1) % 2 == 0)

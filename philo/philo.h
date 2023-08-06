@@ -59,13 +59,15 @@ t_philo	**generate_philosophers(t_condition condition, t_fork **forks, t_state *
 
 /* ft_thread.c */
 void	*new_philo_first(void *arg);
-void	*new_philo_last(void *arg);
+void	*new_philo_last_even(void *arg);
+void	*new_philo_last_odd(void *arg);
 void	*new_philo_even(void *arg);
 void	*new_philo_odd(void *arg);
 
 /* ft_eat.c */
 int	philo_eat_first(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
-int	philo_eat_last(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
+int	philo_eat_last_even(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
+int	philo_eat_last_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
 int	philo_eat_even(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
 int	philo_eat_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
 
