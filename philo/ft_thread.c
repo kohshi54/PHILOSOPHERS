@@ -16,6 +16,7 @@ void	*new_philo_even(void *arg)
 		if (philo_think(info->philo, info->forks, info->condition, info->state) == -1)
 			break ;
 	}
+	free(info);
 	return (NULL);
 }
 
@@ -35,5 +36,6 @@ void	*new_philo_odd(void *arg)
 		if (philo_think(info->philo, info->forks, info->condition, info->state) == -1)
 			break ;
 	}
+	free(info);
 	return (NULL);
 }

@@ -1,11 +1,36 @@
 #include "philo.h"
 
+void	free_forks(t_fork **forks, t_condition condition)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < condition.numofphilo)
+	{
+		free(forks[i]);
+		i++;
+	}
+	free(forks);
+}
+
+void	free_philo_array(t_philo **philo_array, t_condition condition)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < condition.numofphilo)
+	{
+		free(philo_array[i]);
+		i++;
+	}
+	free(philo_array);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_fork		**forks;
 	t_condition	condition;
 	t_state		state;
-	pthread_t	**threads;
 	t_philo		**philo_array;
 
 	if (validate_input(argc, argv) == -1)
@@ -15,14 +40,12 @@ int	main(int argc, char *argv[])
 	forks = create_forks(condition.numofphilo);
 	if (forks == NULL)
 		return (0);
-	threads = malloc(sizeof(pthread_t *) * condition.numofphilo);
-	if (threads == NULL)
-		return (0);
 	philo_array = generate_philosophers(condition, forks, &state);
 	if (philo_array == NULL)
 		return (0);
 	monitor_philos(philo_array, condition, &state, argc);
 	retrieve_philosophers(philo_array, condition);
-	// printf("ending main\n");
+	free_philo_array(philo_array, condition);
+	free_forks(forks, condition);
 	return (0);
 }

@@ -31,7 +31,7 @@ void	monitor_philos(t_philo **philo_array, t_condition condition, t_state *state
 		{
 			pthread_mutex_lock(&(philo_array[i]->lock));
 			now = get_cur_time();
-			if (philo_array[i]->ttd <= now && philo_array[i]->ttd != 0)
+			if (philo_array[i]->ttd < now && philo_array[i]->ttd != 0)
 			{
 				pthread_mutex_lock(&state->lock);
 				state->alive = false;
