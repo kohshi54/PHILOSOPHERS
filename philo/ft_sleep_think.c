@@ -16,7 +16,7 @@ int	philo_sleep(t_philo *philo, t_fork **forks, t_condition condition, t_state *
 	now = print_msg_sleep(philo, state);
 	if (now == -1)
 		return (-1);
-	wait_until(now + condition.timetosleep * 1000);
+	wait_until(now + condition.timetosleep);
 	(void)forks;
 	return (now);
 }

@@ -37,7 +37,7 @@ void	monitor_philos(t_philo **philo_array, t_condition condition, t_state *state
 				state->alive = false;
 				pthread_mutex_unlock(&state->lock);
 				// printf("ttd: %ld, now: %ld\n", philo_array[i]->ttd, now);
-				printf("%ld %zu died\n", now / 1000, philo_array[i]->philo_id);
+				printf("%ld %zu died\n", now, philo_array[i]->philo_id);
 				pthread_mutex_unlock(&philo_array[i]->lock);
 				return ;
 			}

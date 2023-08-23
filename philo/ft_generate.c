@@ -22,7 +22,7 @@ t_fork	**create_forks(size_t numofphilo)
 	return (forks);
 }
 
-t_philo	*allocate_and_set_philo(size_t i)
+t_philo	*allocate_and_set_philo(size_t i, t_condition condition)
 {
 	t_philo	*philo;
 
@@ -31,6 +31,11 @@ t_philo	*allocate_and_set_philo(size_t i)
 		return (NULL);
 	philo->philo_id = i + 1;
 	philo->ttd = 0;
+	philo->right_fork_id = i;
+	if (i + 1 == condition.numofphilo)
+		philo->left_fork_id = 0;
+	else
+		philo->left_fork_id = i + 1;
 	if (pthread_mutex_init(&(philo->lock), NULL) != 0)
 		return (NULL);
 	return (philo);
@@ -53,28 +58,13 @@ t_philo	*set_philo_info_and_new_thread(size_t i, t_fork **forks, t_condition con
 	t_philo	*new_philo;
 	t_info	*new_info;
 
-	new_philo = allocate_and_set_philo(i);
+	new_philo = allocate_and_set_philo(i, condition);
 	if (new_philo == NULL)
 		return (NULL);
 	new_info = allocat_and_set_info(forks, new_philo, condition, state);
 	if (new_info == NULL)
 		return (NULL);
-	if ((i + 1) == 1)
-	{
-		if (pthread_create(&new_philo->thread_id, NULL, new_philo_first, new_info) != 0)
-			return (NULL);
-	}
-	else if ((i + 1) == condition.numofphilo && (i + 1) % 2 == 0)
-	{
-		if (pthread_create(&new_philo->thread_id, NULL, new_philo_last_even, new_info) != 0)
-			return (NULL);
-	}
-	else if ((i + 1) == condition.numofphilo && (i + 1) % 2 == 1)
-	{
-		if (pthread_create(&new_philo->thread_id, NULL, new_philo_last_odd, new_info) != 0)
-			return (NULL);
-	}
-	else if ((i + 1) % 2 == 0)
+	if ((i + 1) % 2 == 0)
 	{
 		if (pthread_create(&new_philo->thread_id, NULL, new_philo_even, new_info) != 0)
 			return (NULL);

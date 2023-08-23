@@ -5,22 +5,17 @@ time_t	get_cur_time()
 	struct timeval	cur;
 
 	gettimeofday(&cur, NULL);
-	return (cur.tv_sec * 1000000) + cur.tv_usec;
+	return (cur.tv_sec * 1000 + cur.tv_usec / 1000);
 }
 
 void	wait_until(time_t until)
 {
-	struct timeval	cur;
-	time_t			current_time_in_microseconds;
+	time_t	cur_time_in_milisecond;
 
 	while (1)
 	{
-		// printf("until: %ld\n", until);
-		gettimeofday(&cur, NULL);
-		current_time_in_microseconds = (cur.tv_sec * 1000000) + cur.tv_usec;
-		// printf("%ld\n", current_time_in_microseconds);
-		if (until <= current_time_in_microseconds)
+		cur_time_in_milisecond = get_cur_time();
+		if (until <= cur_time_in_milisecond)
 			break ;
-		// printf("eating...\n");
 	}
 }

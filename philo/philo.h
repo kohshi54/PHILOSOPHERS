@@ -21,6 +21,8 @@ typedef struct	s_philo
 	size_t			philo_id;
 	time_t			ttd;
 	size_t			eat_count;
+	size_t			left_fork_id;
+	size_t			right_fork_id;
 	pthread_mutex_t	lock;
 }	t_philo;
 
