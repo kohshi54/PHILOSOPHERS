@@ -6,7 +6,7 @@
 /*   By: kyamaguc <kyamaguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:38:15 by kyamaguc          #+#    #+#             */
-/*   Updated: 2023/08/26 15:38:45 by kyamaguc         ###   ########.fr       */
+/*   Updated: 2023/08/26 16:13:52 by kyamaguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ int	validate_input(int argc, char *argv[])
 {
 	if (argc != 5 && argc != 6)
 	{
-		printf("usage: [number_of_philosophers] [time_to_die] [time_to_eat] [time_to_sleep] [number_of_times_each_philosopher_must_eat]\n");
+		printf("usage: [number_of_philosophers] [time_to_die] [time_to_eat] \
+			[time_to_sleep] [number_of_times_each_philosopher_must_eat]\n");
 		return (-1);
 	}
-	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[2]) <= 0 || ft_atoi(argv[3]) <= 0 || ft_atoi(argv[4]) <= 0)
+	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[2]) <= 0 || \
+						ft_atoi(argv[3]) <= 0 || ft_atoi(argv[4]) <= 0)
 	{
 		printf("parameters must be greater than zero\n");
 		return (-1);

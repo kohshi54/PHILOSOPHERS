@@ -6,7 +6,7 @@
 /*   By: kyamaguc <kyamaguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:36:10 by kyamaguc          #+#    #+#             */
-/*   Updated: 2023/08/26 15:36:25 by kyamaguc         ###   ########.fr       */
+/*   Updated: 2023/08/26 16:12:28 by kyamaguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ t_philo	*allocate_and_set_philo(size_t i, t_condition condition)
 	return (philo);
 }
 
-t_info	*allocat_and_set_info(t_fork **forks, t_philo *philo, t_condition condition, t_state *state)
+t_info	*allocat_and_set_info(t_fork **forks, t_philo *philo, \
+					t_condition condition, t_state *state)
 {
 	t_info	*new;
 
@@ -65,7 +66,8 @@ t_info	*allocat_and_set_info(t_fork **forks, t_philo *philo, t_condition conditi
 	return (new);
 }
 
-t_philo	*set_philo_info_and_new_thread(size_t i, t_fork **forks, t_condition condition, t_state *state)
+t_philo	*set_philo_info_and_new_thread(size_t i, t_fork **forks, \
+					t_condition condition, t_state *state)
 {
 	t_philo	*new_philo;
 	t_info	*new_info;
@@ -78,18 +80,21 @@ t_philo	*set_philo_info_and_new_thread(size_t i, t_fork **forks, t_condition con
 		return (NULL);
 	if ((i + 1) % 2 == 0)
 	{
-		if (pthread_create(&new_philo->thread_id, NULL, new_philo_even, new_info) != 0)
+		if (pthread_create(&new_philo->thread_id, NULL, \
+					new_philo_even, new_info) != 0)
 			return (NULL);
 	}
 	else
 	{
-		if (pthread_create(&new_philo->thread_id, NULL, new_philo_odd, new_info) != 0)
+		if (pthread_create(&new_philo->thread_id, NULL, \
+					new_philo_odd, new_info) != 0)
 			return (NULL);
 	}
 	return (new_philo);
 }
 
-t_philo	**generate_philosophers(t_condition condition, t_fork **forks, t_state *state)
+t_philo	**generate_philosophers(t_condition condition, t_fork **forks, \
+					t_state *state)
 {
 	size_t		i;
 	t_philo		**philo_array;
@@ -100,7 +105,8 @@ t_philo	**generate_philosophers(t_condition condition, t_fork **forks, t_state *
 		return (free_forks_and_return_null(forks, condition.numofphilo));
 	while (i < condition.numofphilo)
 	{
-		philo_array[i] = set_philo_info_and_new_thread(i, forks, condition, state);
+		philo_array[i] = set_philo_info_and_new_thread(i, forks, \
+						condition, state);
 		if (philo_array[i] == NULL)
 		{
 			free_philos(philo_array, i);

@@ -6,13 +6,14 @@
 /*   By: kyamaguc <kyamaguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:34:28 by kyamaguc          #+#    #+#             */
-/*   Updated: 2023/08/26 16:07:28 by kyamaguc         ###   ########.fr       */
+/*   Updated: 2023/08/26 16:12:47 by kyamaguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	philo_eat_even(t_philo *philo, t_fork **forks, t_condition condition, t_state *state)
+int	philo_eat_even(t_philo *philo, t_fork **forks, t_condition condition, \
+					t_state *state)
 {
 	time_t	now;
 
@@ -33,7 +34,8 @@ int	philo_eat_even(t_philo *philo, t_fork **forks, t_condition condition, t_stat
 	return (0);
 }
 
-int	philo_eat_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state *state)
+int	philo_eat_odd(t_philo *philo, t_fork **forks, t_condition condition, \
+				t_state *state)
 {
 	time_t	now;
 

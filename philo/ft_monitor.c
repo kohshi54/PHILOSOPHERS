@@ -6,13 +6,14 @@
 /*   By: kyamaguc <kyamaguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:36:51 by kyamaguc          #+#    #+#             */
-/*   Updated: 2023/08/26 16:09:46 by kyamaguc         ###   ########.fr       */
+/*   Updated: 2023/08/26 16:11:29 by kyamaguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	check_all_philo_has_eaten_at_least_counttoeat(t_philo **philo_array, t_condition condition)
+bool	check_all_philo_has_eaten_at_least_counttoeat(t_philo **philo_array, \
+		t_condition condition)
 {
 	size_t	i;
 
@@ -58,7 +59,8 @@ int	check_death(t_philo **philo_array, t_condition condition, t_state *state)
 
 int	check_eatcount(t_philo **philo_array, t_condition condition, t_state *state)
 {
-	if (check_all_philo_has_eaten_at_least_counttoeat(philo_array, condition) == true)
+	if (check_all_philo_has_eaten_at_least_counttoeat(philo_array, condition) \
+					== true)
 	{
 		pthread_mutex_lock(&state->lock);
 		state->alive = false;
@@ -68,7 +70,8 @@ int	check_eatcount(t_philo **philo_array, t_condition condition, t_state *state)
 	return (0);
 }
 
-void	monitor_philos(t_philo **philo_array, t_condition condition, t_state *state, int argc)
+void	monitor_philos(t_philo **philo_array, t_condition condition, \
+				t_state *state, int argc)
 {
 	while (1)
 	{

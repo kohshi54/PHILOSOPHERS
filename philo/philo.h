@@ -6,7 +6,7 @@
 /*   By: kyamaguc <kyamaguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:41:20 by kyamaguc          #+#    #+#             */
-/*   Updated: 2023/08/26 16:08:54 by kyamaguc         ###   ########.fr       */
+/*   Updated: 2023/08/26 16:15:18 by kyamaguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,13 @@ typedef struct s_info
 int		validate_input(int argc, char *argv[]);
 void	init_condition(t_condition *conditon, int argc, char *argv[]);
 bool	init_state(t_state *state);
-bool	set_vars(t_condition *condition, int argc, char *argv[], t_state *state);
+bool	set_vars(t_condition *condition, int argc, char *argv[], \
+				t_state *state);
 
 /* ft_generate.c */
 t_fork	**create_forks(size_t numofphilo);
-t_philo	**generate_philosophers(t_condition condition, t_fork **forks, t_state *state);
+t_philo	**generate_philosophers(t_condition condition, t_fork **forks, \
+									t_state *state);
 
 /* ft_thread.c */
 void	*new_philo_first(void *arg);
@@ -79,11 +81,16 @@ void	*new_philo_even(void *arg);
 void	*new_philo_odd(void *arg);
 
 /* ft_eat.c */
-int		philo_eat_first(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
-int		philo_eat_last_even(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
-int		philo_eat_last_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
-int		philo_eat_even(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
-int		philo_eat_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
+int		philo_eat_first(t_philo *philo, t_fork **forks, \
+							t_condition condition, t_state *state);
+int		philo_eat_last_even(t_philo *philo, t_fork **forks, \
+							t_condition condition, t_state *state);
+int		philo_eat_last_odd(t_philo *philo, t_fork **forks, \
+							t_condition condition, t_state *state);
+int		philo_eat_even(t_philo *philo, t_fork **forks, \
+							t_condition condition, t_state *state);
+int		philo_eat_odd(t_philo *philo, t_fork **forks, \
+							t_condition condition, t_state *state);
 
 /* ft_eat_utils.c */
 void	set_ttd(t_philo *philo, time_t now, t_condition condition);
@@ -92,8 +99,10 @@ int		unlock_mutex_when_error_even(int rule, t_fork **forks, t_philo *philo);
 int		unlock_mutex_when_error_odd(int rule, t_fork **forks, t_philo *philo);
 
 /* ft_sleep_think.c */
-int		philo_think(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
-int		philo_sleep(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
+int		philo_think(t_philo *philo, t_fork **forks, \
+						t_condition condition, t_state *state);
+int		philo_sleep(t_philo *philo, t_fork **forks, \
+						t_condition condition, t_state *state);
 
 /* ft_print_msg.c */
 int		print_msg_takefork(t_philo *philo, t_state *state);
@@ -102,8 +111,10 @@ time_t	print_msg_sleep(t_philo *philo, t_state *state);
 int		print_msg_think(t_philo *philo, t_state *state);
 
 /* ft_monitor.c */
-bool	check_all_philo_has_eaten_at_least_counttoeat(t_philo **philo_array, t_condition condition);
-void	monitor_philos(t_philo **philo_array, t_condition condition, t_state *state, int argc);
+bool	check_all_philo_has_eaten_at_least_counttoeat(t_philo **philo_array, \
+							t_condition condition);
+void	monitor_philos(t_philo **philo_array, \
+							t_condition condition, t_state *state, int argc);
 
 /* ft_time.c */
 time_t	get_cur_time(void);

@@ -6,7 +6,7 @@
 /*   By: kyamaguc <kyamaguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:39:27 by kyamaguc          #+#    #+#             */
-/*   Updated: 2023/08/26 15:40:05 by kyamaguc         ###   ########.fr       */
+/*   Updated: 2023/08/26 16:13:29 by kyamaguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,14 @@ void	*new_philo_even(void *arg)
 	pthread_mutex_unlock(&info->philo->lock);
 	while (1)
 	{
-		if (philo_eat_even(info->philo, info->forks, info->condition, info->state) == -1)
+		if (philo_eat_even(info->philo, info->forks, info->condition, \
+						info->state) == -1)
 			break ;
-		if (philo_sleep(info->philo, info->forks, info->condition, info->state) == -1)
+		if (philo_sleep(info->philo, info->forks, info->condition, \
+						info->state) == -1)
 			break ;
-		if (philo_think(info->philo, info->forks, info->condition, info->state) == -1)
+		if (philo_think(info->philo, info->forks, info->condition, \
+						info->state) == -1)
 			break ;
 	}
 	free(info);
@@ -43,11 +46,14 @@ void	*new_philo_odd(void *arg)
 	pthread_mutex_unlock(&info->philo->lock);
 	while (1)
 	{
-		if (philo_eat_odd(info->philo, info->forks, info->condition, info->state) == -1)
+		if (philo_eat_odd(info->philo, info->forks, info->condition, \
+						info->state) == -1)
 			break ;
-		if (philo_sleep(info->philo, info->forks, info->condition, info->state) == -1)
+		if (philo_sleep(info->philo, info->forks, info->condition, \
+						info->state) == -1)
 			break ;
-		if (philo_think(info->philo, info->forks, info->condition, info->state) == -1)
+		if (philo_think(info->philo, info->forks, info->condition, \
+						info->state) == -1)
 			break ;
 	}
 	free(info);
