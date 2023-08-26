@@ -6,7 +6,7 @@
 /*   By: kyamaguc <kyamaguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:41:20 by kyamaguc          #+#    #+#             */
-/*   Updated: 2023/08/26 15:44:09 by kyamaguc         ###   ########.fr       */
+/*   Updated: 2023/08/26 16:08:54 by kyamaguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,12 @@ int		philo_eat_last_even(t_philo *philo, t_fork **forks, t_condition condition, 
 int		philo_eat_last_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
 int		philo_eat_even(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
 int		philo_eat_odd(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);
+
+/* ft_eat_utils.c */
+void	set_ttd(t_philo *philo, time_t now, t_condition condition);
+void	add_eat_count(t_philo *philo);
+int		unlock_mutex_when_error_even(int rule, t_fork **forks, t_philo *philo);
+int		unlock_mutex_when_error_odd(int rule, t_fork **forks, t_philo *philo);
 
 /* ft_sleep_think.c */
 int		philo_think(t_philo *philo, t_fork **forks, t_condition condition, t_state *state);

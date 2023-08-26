@@ -7,6 +7,7 @@ SRCS = main.c \
 		ft_generate.c \
 		ft_thread.c \
 		ft_eat.c \
+		ft_eat_utils.c \
 		ft_sleep_think.c \
 		ft_print_msg.c \
 		ft_monitor.c \
