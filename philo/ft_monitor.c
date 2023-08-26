@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_monitor.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kyamaguc <kyamaguc@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/26 15:36:51 by kyamaguc          #+#    #+#             */
+/*   Updated: 2023/08/26 15:38:11 by kyamaguc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 bool	check_all_philo_has_eaten_at_least_counttoeat(t_philo **philo_array, t_condition condition)
@@ -36,7 +48,6 @@ void	monitor_philos(t_philo **philo_array, t_condition condition, t_state *state
 				pthread_mutex_lock(&state->lock);
 				state->alive = false;
 				pthread_mutex_unlock(&state->lock);
-				// printf("ttd: %ld, now: %ld\n", philo_array[i]->ttd, now);
 				printf("%ld %zu died\n", now, philo_array[i]->philo_id);
 				pthread_mutex_unlock(&philo_array[i]->lock);
 				return ;

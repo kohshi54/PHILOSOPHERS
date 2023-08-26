@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_prepare.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kyamaguc <kyamaguc@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/26 15:38:15 by kyamaguc          #+#    #+#             */
+/*   Updated: 2023/08/26 15:38:45 by kyamaguc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	validate_input(int argc, char *argv[])
@@ -25,7 +37,7 @@ void	init_condition(t_condition *condition, int argc, char *argv[])
 	condition->numofphilo = ft_atoi(argv[1]);
 	condition->timetodie = ft_atoi(argv[2]);
 	condition->timetoeat = ft_atoi(argv[3]);
-	condition->timetosleep  = ft_atoi(argv[4]);
+	condition->timetosleep = ft_atoi(argv[4]);
 	if (argc == 6)
 		condition->numtoeat = ft_atoi(argv[5]);
 }

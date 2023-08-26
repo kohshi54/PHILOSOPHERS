@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_thread.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kyamaguc <kyamaguc@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/26 15:39:27 by kyamaguc          #+#    #+#             */
+/*   Updated: 2023/08/26 15:40:05 by kyamaguc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	*new_philo_even(void *arg)
 {
-	t_info *info = arg;
+	t_info	*info;
 
+	info = arg;
 	pthread_mutex_lock(&info->philo->lock);
 	info->philo->ttd = get_cur_time() + info->condition.timetodie;
 	pthread_mutex_unlock(&info->philo->lock);
@@ -22,8 +35,9 @@ void	*new_philo_even(void *arg)
 
 void	*new_philo_odd(void *arg)
 {
-	t_info *info = arg;
+	t_info	*info;
 
+	info = arg;
 	pthread_mutex_lock(&info->philo->lock);
 	info->philo->ttd = get_cur_time() + info->condition.timetodie;
 	pthread_mutex_unlock(&info->philo->lock);
